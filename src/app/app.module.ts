@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PvpalumniModule } from './pvpalumni/pvpalumni.module';
 
 @NgModule({
   declarations: [
@@ -11,8 +10,7 @@ import { PvpalumniModule } from './pvpalumni/pvpalumni.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    PvpalumniModule
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
