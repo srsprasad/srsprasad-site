@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.httpClient
-      .get<any[]>('http://localhost:8080/student/all')
+      .get<any[]>('http://65.1.20.88:8080/student/all')
       .subscribe((data) => {
         console.log(data);
         this.gridOptions.rowData = data;
