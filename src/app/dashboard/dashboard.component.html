@@ -1,37 +1,54 @@
 <div class="fluid-container">
   <div class="row">
-    <div class="col-10 ag-theme-balham"  style="height: 100%; box-sizing: border-box;">
+    <div class="col-10 ag-theme-balham"  style="height: 50%; box-sizing: border-box;">
       <ag-grid-angular
           style="height: 500px;"
-          class="ag-theme-alpine"
           [gridOptions]="gridOptions"
           [rowData]="gridOptions.rowData"
           [rowClassRules]="gridOptions.rowClassRules"
-      >
+          >
       </ag-grid-angular>
     </div>
     <div class="col-2">
+
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+        [(ngModel)]="vibhag.model.all"
+        (change) = "filterChange();"
+        />
         <label class="form-check-label" for="flexSwitchCheckChecked">All</label>
       </div>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+        [disabled]="vibhag.options.disableAll"
+        [(ngModel)]="vibhag.model.palamur"
+        (change) = "filterChange();">
         <label class="form-check-label" for="flexSwitchCheckChecked">Palamur</label>      </div>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+        [disabled]="vibhag.options.disableAll"
+        [(ngModel)]="vibhag.model.rangareddy"
+        (change) = "filterChange();">
         <label class="form-check-label" for="flexSwitchCheckChecked">Ranga Reddy</label>
       </div>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+        [disabled]="vibhag.options.disableAll"
+        [(ngModel)]="vibhag.model.bhagyanagar"
+        (change) = "filterChange();">
         <label class="form-check-label" for="flexSwitchCheckChecked">Bhagyanagar</label>
       </div>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+        [disabled]="vibhag.options.disableAll"
+        [(ngModel)]="vibhag.model.warangalUrban"
+        (change) = "filterChange();">
         <label class="form-check-label" for="flexSwitchCheckChecked">Warangal Urban</label>
       </div>
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
+        [disabled]="vibhag.options.disableAll"
+        [(ngModel)]="vibhag.model.sirisilla" (change) = "filterChange();">
         <label class="form-check-label" for="flexSwitchCheckChecked">Sirisilla</label>
       </div>
     </div>
