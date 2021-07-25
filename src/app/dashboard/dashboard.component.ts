@@ -127,7 +127,7 @@ export class DashboardComponent implements OnInit {
   }
 
   schoolNameGetter= (params: ValueGetterParams)=>{
-    return params.data.SCHOOL_NAME + params.data.SCHOOL_NAMES;
+    return (params.data.SCHOOL_NAME? params.data.SCHOOL_NAME : "") + (params.data.SCHOOL_NAMES? params.data.SCHOOL_NAMES : "");
   };
 
   filterChange(): void {
