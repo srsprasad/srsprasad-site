@@ -16,17 +16,13 @@ export class DashboardComponent implements OnInit {
   private httpClient: HttpClient;
   private studentService: StudentService;
   private organization: OrganizationService;
+  lastUpdatedOn:any ="20-Jul-2021";
   rowData: any;
   vibharList: any[];
 
   vibhag = {
     model: {
-      all: true,
-      palamur: false,
-      rangareddy: false,
-      bhagyanagar: false,
-      warangalUrban: false,
-      sirisilla: false,
+      all: true
     },
     options: {
       disableAll: false,
@@ -50,7 +46,7 @@ export class DashboardComponent implements OnInit {
 
     this.gridOptions.columnDefs =[
       {
-        headerName: 'Data Updated On:- 20-Jul-2021',
+        headerName: 'Data Updated As On:- ' + this.lastUpdatedOn,
         children: [
           {
             field: 'status',
@@ -95,13 +91,6 @@ export class DashboardComponent implements OnInit {
             resizable: true,
             filter: true,
           },
-          {
-            field: 'CONTACT_NUMBER',
-            headerName: 'Contact No',
-            sortable: true,
-            resizable: true,
-            filter: true,
-          },
         ]
     }
     ];
@@ -120,19 +109,17 @@ export class DashboardComponent implements OnInit {
   }
 
   loadStudentData(schoolIds: any[]) {
-    let verAlumniData = this.studentService.getVerifiedAlumniStudents();
-    let unverAlumniData = this.studentService.getUnverifiedAlumniStudents();
-    forkJoin([verAlumniData, unverAlumniData]).subscribe(result=>{
-      result[0].forEach(data=>data.status='Verified');
-      result[1].forEach(data=>data.status='Uploaded');
-      if (schoolIds.length > 0){
-        console.log("Applying filter with :", schoolIds);
-        this.rowData = result[0].concat(result[1]).filter(e=>this.isEligibleForView(e, schoolIds));
-      }else{
-        console.log("No filters applied");
-        this.rowData = result[0].concat(result[1]);
+    this.studentService.getAllStudentData().subscribe(
+      response=>{
+        this.lastUpdatedOn = response.lastUpdateOn;
+        if (schoolIds.length > 0) {
+          this.rowData = [].concat(response.verifiedData, response.uploadedData, response.uploadedSingleData, response.submittedData)
+                          .filter(e=>this.isEligibleForView(e, schoolIds));
+        }else {
+          this.rowData = [].concat(response.verifiedData, response.uploadedData, response.uploadedSingleData, response.submittedData);
+        }
       }
-    });
+    );
   }
 
   isEligibleForView (e:any, schoolIds: any[]) {
@@ -153,20 +140,12 @@ export class DashboardComponent implements OnInit {
       let filterSchoolIds = this.vibharList.filter(element=> element.checked).map(data=>data.schoolIdList);
       if (filterSchoolIds.length > 0) {
         mergedSchoolIds = [].concat.apply([],filterSchoolIds);
-        console.log(mergedSchoolIds);
       }
     }
     this.loadStudentData(mergedSchoolIds);
   }
 
   reset(): void {
-    this.vibhag.model.bhagyanagar =
-      this.vibhag.model.palamur =
-      this.vibhag.model.rangareddy =
-      this.vibhag.model.bhagyanagar =
-      this.vibhag.model.warangalUrban =
-      this.vibhag.model.sirisilla =
-        !this.vibhag.model.all;
     this.vibhag.options.disableAll = this.vibhag.model.all;
     this.vibharList.forEach(element => {
       element.checked = !this.vibhag.model.all;
