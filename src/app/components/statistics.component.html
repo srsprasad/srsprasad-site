@@ -1,0 +1,34 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-6">
+        Registrations
+      </div>
+      <div class="col-6" style="text-align: right;">
+        <div class="badge badge-pill badge-primary">{{statistics.total.count}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body small-font">
+    <div class="row">
+      <div class="col-6" style="text-align: left;">
+        <i i-bs name="info-circle-fill" ngbTooltip="{{statistics.verified.description}}"></i> {{statistics.verified.name}}
+      </div>
+      <div class="col-6" style="text-align: right;">
+        <span class="badge badge-pill badge-success">{{statistics.verified.count}}</span>
+      </div>
+      <div class="col-6" style="text-align: left;">
+        <i i-bs name="info-circle-fill" ngbTooltip="{{statistics.uploaded.description}}"></i> {{statistics.uploaded.name}}
+      </div>
+      <div class="col-6" style="text-align: right;">
+        <span class="badge badge-pill badge-warning">{{statistics.uploaded.count}}</span>
+      </div>
+      <div class="col-6" style="text-align: left;">
+        <i i-bs name="info-circle-fill" ngbTooltip="{{statistics.submitted.description}}"></i> {{statistics.submitted.name}}
+      </div>
+      <div class="col-6" style="text-align: right;">
+        <span class="badge badge-pill badge-danger">{{statistics.submitted.count}}</span>
+      </div>
+    </div>
+  </div>
+</div>

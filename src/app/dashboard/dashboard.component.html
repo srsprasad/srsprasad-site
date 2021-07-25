@@ -1,57 +1,59 @@
 <div class="fluid-container">
   <div class="row">
-    <div class="col-11 ag-theme-balham"  style="height: 50%; box-sizing: border-box;">
+    <div class="col-9">
       <ag-grid-angular
-          style="height: 500px; width: 100%;"
-          [gridOptions]="gridOptions"
-          [rowData]="gridOptions.rowData"
-          [rowClassRules]="gridOptions.rowClassRules"
-          >
+        style="height: 450px"
+        class="ag-theme-balham"
+        [gridOptions]="gridOptions"
+        [rowData]="rowData"
+        [rowClassRules]="gridOptions.rowClassRules"
+      >
       </ag-grid-angular>
     </div>
-    <!--div class="col-2">
+    <div class="col-3">
+      <div class="row">
+      <div class="col-12">
+        <app-statistics [data]="rowData"></app-statistics>
+      </div>
+      <div class="col-12" style="padding-top: 5px;">
+      <div class="card">
+        <div class="card-header">
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexSwitchCheckChecked"
+              [(ngModel)]="vibhag.model.all"
+              (change)="filterChange()"
+            />
+            <label class="form-check-label" for="flexSwitchCheckChecked"
+              >Vibhag Names</label
+            >
+          </div>
+        </div>
+        <div class="card-body small-font">
+          <div class="row">
+            <div *ngFor="let v of vibharList" class="col-6">
+              <div class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="{{ v.key }}"
+                  [disabled]="vibhag.options.disableAll"
+                  [(ngModel)]="v.checked"
+                  (change)="filterChange()"
+                />
+                <label class="form-check-label" for="{{ v.key }}">{{
+                  v.name
+                }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
 
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-        [(ngModel)]="vibhag.model.all"
-        (change) = "filterChange();"
-        />
-        <label class="form-check-label" for="flexSwitchCheckChecked">All</label>
-      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-        [disabled]="vibhag.options.disableAll"
-        [(ngModel)]="vibhag.model.palamur"
-        (change) = "filterChange();">
-        <label class="form-check-label" for="flexSwitchCheckChecked">Palamur</label>      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-        [disabled]="vibhag.options.disableAll"
-        [(ngModel)]="vibhag.model.rangareddy"
-        (change) = "filterChange();">
-        <label class="form-check-label" for="flexSwitchCheckChecked">Ranga Reddy</label>
-      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-        [disabled]="vibhag.options.disableAll"
-        [(ngModel)]="vibhag.model.bhagyanagar"
-        (change) = "filterChange();">
-        <label class="form-check-label" for="flexSwitchCheckChecked">Bhagyanagar</label>
-      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-        [disabled]="vibhag.options.disableAll"
-        [(ngModel)]="vibhag.model.warangalUrban"
-        (change) = "filterChange();">
-        <label class="form-check-label" for="flexSwitchCheckChecked">Warangal Urban</label>
-      </div>
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked"
-        [disabled]="vibhag.options.disableAll"
-        [(ngModel)]="vibhag.model.sirisilla" (change) = "filterChange();">
-        <label class="form-check-label" for="flexSwitchCheckChecked">Sirisilla</label>
-      </div>
-    </div-->
   </div>
 </div>
 
