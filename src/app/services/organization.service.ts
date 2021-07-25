@@ -1,9 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrganizationService {
+
+  httpClient: HttpClient;
 
   vibhagList: any[]=[
     {key: 'palamur', name: 'Palamur', schoolIdList:[731], checked: true},
@@ -13,9 +17,11 @@ export class OrganizationService {
     {key: 'sirisilla', name: 'Sirisilla', schoolIdList: [714], checked: true},
   ];
 
-  constructor() { }
+  constructor(httpClient: HttpClient) {
+    this.httpClient = httpClient;
+  }
 
-  getVibhagList():any[] {
-    return this.vibhagList.sort((a,b)=>{return (a.key<b.key)? -1: (a.key == b.key)?0: 1});
+  getVibhagList():Observable<any[]> {
+    return this.httpClient.get<any[]>("http://65.1.20.88:8080/school/district/all");
   }
 }

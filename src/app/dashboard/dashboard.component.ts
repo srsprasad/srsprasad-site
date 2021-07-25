@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
   private organization: OrganizationService;
   lastUpdatedOn:any ="20-Jul-2021";
   rowData: any;
-  vibharList: any[];
+  vibharList: any[] = [];
 
   vibhag = {
     model: {
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
     this.organization = organization;
 
     //Initialization Vibhag List
-    this.vibharList = this.organization.getVibhagList();
+    this.organization.getVibhagList().subscribe(data=>{this.vibharList = data;});
     this.reset();
     this.gridOptions = <GridOptions>{
       pagination: true,
