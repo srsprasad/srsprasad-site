@@ -10,6 +10,6 @@ export class StudentService {
   constructor(httpClient: HttpClient) { this.httpClient = httpClient;}
 
   getAllStudentData() {
-    return this.httpClient.get<any>("http://localhost:8080/student/all");
+    return this.httpClient.get<any>("http://65.1.20.88:8080/student/all");
   }
 }

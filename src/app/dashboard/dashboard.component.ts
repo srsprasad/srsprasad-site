@@ -118,6 +118,7 @@ export class DashboardComponent implements OnInit {
         }else {
           this.rowData = [].concat(response.verifiedData, response.uploadedData, response.uploadedSingleData, response.submittedData);
         }
+        console.log("Data: " + this.rowData);
       }
     );
   }
