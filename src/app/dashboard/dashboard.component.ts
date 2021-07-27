@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ColumnApi, GridApi, GridOptions, RowClassParams, ValueGetterParams } from 'ag-grid-community';
+import {
+  ColumnApi,
+  GridApi,
+  GridOptions,
+  RowClassParams,
+  ValueGetterParams,
+} from 'ag-grid-community';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { StudentService } from '../services/student.service';
@@ -9,20 +15,21 @@ import { OrganizationService } from '../services/organization.service';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  providers: [StudentService]
+  providers: [StudentService],
 })
 export class DashboardComponent implements OnInit {
   public gridOptions: GridOptions;
   private httpClient: HttpClient;
   private studentService: StudentService;
   private organization: OrganizationService;
-  lastUpdatedOn:any ="20-Jul-2021";
-  rowData: any;
+  lastUpdatedOn: any = '26-Jul-2021';
+  rowData: any[] = [];
   vibharList: any[] = [];
 
   vibhag = {
     model: {
-      all: true
+      all: true,
+      googleForm: false,
     },
     options: {
       disableAll: false,
@@ -32,19 +39,25 @@ export class DashboardComponent implements OnInit {
   agApi: any;
   agColumnApi: any;
 
-  constructor(http: HttpClient, studentService: StudentService, organization: OrganizationService) {
+  constructor(
+    http: HttpClient,
+    studentService: StudentService,
+    organization: OrganizationService
+  ) {
     this.studentService = studentService;
     this.httpClient = http;
     this.organization = organization;
 
     //Initialization Vibhag List
-    this.organization.getVibhagList().subscribe(data=>{this.vibharList = data;});
+    this.organization.getVibhagList().subscribe((data) => {
+      this.vibharList = data;
+    });
     this.reset();
     this.gridOptions = <GridOptions>{
       pagination: true,
     };
 
-    this.gridOptions.columnDefs =[
+    this.gridOptions.columnDefs = [
       {
         headerName: 'Data Updated As On:- ' + this.lastUpdatedOn,
         children: [
@@ -56,17 +69,17 @@ export class DashboardComponent implements OnInit {
             filter: true,
           },
           {
+            field: 'ALUMNI_ID',
+            headerName: 'Alumni Id',
+            sortable: true,
+            resizable: true,
+            valueGetter: this.studentIdGetter,
+          },
+          {
             field: 'ALUMNI_NAME',
             headerName: 'Alumni Name',
             resizable: true,
             sortable: true,
-            filter: true,
-          },
-          {
-            field: 'STUDENT_NAME',
-            headerName: 'Student Name',
-            sortable: true,
-            resizable: true,
             filter: true,
           },
           {
@@ -91,8 +104,14 @@ export class DashboardComponent implements OnInit {
             resizable: true,
             filter: true,
           },
-        ]
-    }
+          {
+            field: 'SUBMITTED_ON',
+            headerName: 'Submitted On',
+            sortable: true,
+            resizable: true,
+          },
+        ],
+      },
     ];
     this.loadStudentData([]);
   }
@@ -109,38 +128,50 @@ export class DashboardComponent implements OnInit {
   }
 
   loadStudentData(schoolIds: any[]) {
-    this.studentService.getAllStudentData().subscribe(
-      response=>{
-        this.lastUpdatedOn = response.lastUpdateOn;
-        if (schoolIds.length > 0) {
-          this.rowData = [].concat(response.verifiedData, response.uploadedData, response.uploadedSingleData, response.submittedData)
-                          .filter(e=>this.isEligibleForView(e, schoolIds));
-        }else {
-          this.rowData = [].concat(response.verifiedData, response.uploadedData, response.uploadedSingleData, response.submittedData);
-        }
-        console.log("Data: " + this.rowData);
+    this.studentService.getAllStudentData().subscribe((response) => {
+      this.lastUpdatedOn = response.lastUpdateOn;
+      let data:any[];
+      if (!this.vibhag.model.googleForm) {
+        data = [].concat(
+          response.verifiedData,
+          response.uploadedData,
+          response.uploadedSingleData
+        );
+      } else {
+        data= [].concat(response.googleFormData);
       }
-    );
+      if (schoolIds.length > 0){
+        this.rowData = data.filter(e=>this.isEligibleForView(e, schoolIds));
+      }else {
+        this.rowData = data;
+      }
+    });
   }
 
-  isEligibleForView (e:any, schoolIds: any[]) {
-    return schoolIds.filter(id=> id == e.SCHOOL_ID).length > 0 ;
+  isEligibleForView(e: any, schoolIds: any[]) {
+    return schoolIds.filter((id) => id == e.SCHOOL_ID).length > 0;
   }
 
-  schoolNameGetter= (params: ValueGetterParams)=>{
-    return (params.data.SCHOOL_NAME? params.data.SCHOOL_NAME : "") + (params.data.SCHOOL_NAMES? params.data.SCHOOL_NAMES : "");
+  schoolNameGetter = (params: ValueGetterParams) => {
+    return params.data.SCHOOL_NAME ? params.data.SCHOOL_NAME : '';
+  };
+
+  studentIdGetter = (params: ValueGetterParams) => {
+    return params.data.ALUMNI_ID ? params.data.ALUMNI_ID : (params.data.studentId? params.data.studentId : '');
   };
 
   filterChange(): void {
-    let mergedSchoolIds:any[] = [];
+    let mergedSchoolIds: any[] = [];
     if (this.vibhag.model.all) {
       this.vibhag.options.disableAll = true;
       this.reset();
     } else {
       this.vibhag.options.disableAll = false;
-      let filterSchoolIds = this.vibharList.filter(element=> element.checked).map(data=>data.schoolIdList);
+      let filterSchoolIds = this.vibharList
+        .filter((element) => element.checked)
+        .map((data) => data.schoolIdList);
       if (filterSchoolIds.length > 0) {
-        mergedSchoolIds = [].concat.apply([],filterSchoolIds);
+        mergedSchoolIds = [].concat.apply([], filterSchoolIds);
       }
     }
     this.loadStudentData(mergedSchoolIds);
@@ -148,7 +179,7 @@ export class DashboardComponent implements OnInit {
 
   reset(): void {
     this.vibhag.options.disableAll = this.vibhag.model.all;
-    this.vibharList.forEach(element => {
+    this.vibharList.forEach((element) => {
       element.checked = !this.vibhag.model.all;
     });
   }
