@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   private httpClient: HttpClient;
   private studentService: StudentService;
   private organization: OrganizationService;
-  lastUpdatedOn: any = '26-Jul-2021';
+  lastUpdatedOn: any = '01-Aug-2021';
   rowData: any[] = [];
   vibharList: any[] = [];
 
