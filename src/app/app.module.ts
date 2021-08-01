@@ -15,6 +15,7 @@ import { AgGridModule } from 'ag-grid-angular';
 import { StatisticsComponent } from './components/statistics.component';
 import { allIcons } from 'ngx-bootstrap-icons';
 import { StudentComponent } from './student/student.component';
+import { AlumniComponent } from './alumni/alumni.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { StudentComponent } from './student/student.component';
     DashboardComponent,
     TeamComponent,
     StatisticsComponent,
-    StudentComponent
+    StudentComponent,
+    AlumniComponent
   ],
   imports: [
     BrowserModule,
